@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { CreateUserDto } from './users.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UsersService } from './users.service';
 
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private service: UsersService) {}
@@ -15,10 +16,5 @@ export class UsersController {
   @Get(':username')
   findOne(@Param('username') username: string): Promise<User> {
     return this.service.findOne(username);
-  }
-
-  @Post()
-  create(@Body() data: CreateUserDto): Promise<User> {
-    return this.service.create(data);
   }
 }
