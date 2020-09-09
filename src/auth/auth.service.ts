@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma.service';
 import { UsersService } from '../users/users.service';
 import { LoginDto, RegisterDto } from './auth.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,15 @@ export class AuthService {
       where: { username },
     });
 
-    if (!user || user.password !== password) {
+    if (!user) {
+      throw new UnauthorizedException(
+        'a user with this username does not exist',
+      );
+    }
+
+    const passwordValid = await bcrypt.compare(password, user.password);
+
+    if (!passwordValid) {
       throw new UnauthorizedException('invalid password');
     }
 
