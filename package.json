@@ -1,7 +1,6 @@
 {
-  "name": "twitter-clone",
+  "name": "twitter-api",
   "version": "0.0.1",
-  "description": "A twitter clone built with NestJS, Prisma and React",
   "author": "Dario Ielardi",
   "private": true,
   "license": "UNLICENSED",
